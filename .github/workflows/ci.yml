@@ -32,11 +32,11 @@ jobs:
       - name: Package installation archive
         run: |
           mkdir -p out
-          zip -qr out/GrainRotRotLurkerSpawner-v0.1.0.zip ue4ss/Mods/GrainRotRotLurkerSpawner
-          unzip -t out/GrainRotRotLurkerSpawner-v0.1.0.zip
+          zip -qr out/GrainRotRotLurkerSpawner-v0.1.1.zip ue4ss/Mods/GrainRotRotLurkerSpawner
+          unzip -t out/GrainRotRotLurkerSpawner-v0.1.1.zip
       - name: Upload installation archive
         uses: actions/upload-artifact@v4
         with:
-          name: GrainRotRotLurkerSpawner-v0.1.0
-          path: out/GrainRotRotLurkerSpawner-v0.1.0.zip
+          name: GrainRotRotLurkerSpawner-v0.1.1
+          path: out/GrainRotRotLurkerSpawner-v0.1.1.zip
           if-no-files-found: error
