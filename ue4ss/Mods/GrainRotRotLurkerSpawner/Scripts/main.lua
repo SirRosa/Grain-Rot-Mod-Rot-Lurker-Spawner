@@ -309,6 +309,13 @@ local function tick()
         verify()
     end
     if CFG.MaxAlive > 0 and S.observed >= CFG.MaxAlive then return end
+    -- Prefer a concrete loaded Rotlurker class. Shipping builds may expose
+    -- DebugSpawnCharacter in the dump but reject the command at runtime.
+    local direct, fallbackReason
+    if valid(S.enemyClass) then
+        direct, fallbackReason = directSpawn(ctx)
+        if direct then return end
+    end
     local pc = findHostController()
     local ok, reason = nativeSpawn(pc, ctx)
     if ok then
@@ -319,12 +326,10 @@ local function tick()
         end
         return
     end
-    local direct, fallbackReason = directSpawn(ctx)
-    if not direct then
-        S.failures = S.failures + 1
-        if S.failures <= 3 or S.failures % 30 == 0 then
-            log("SPAWN FAILED: " .. tostring(reason) .. " / " .. tostring(fallbackReason))
-        end
+    S.failures = S.failures + 1
+    if S.failures <= 3 or S.failures % 30 == 0 then
+        log("SPAWN FAILED: " .. tostring(fallbackReason or "Rotlurker class not loaded") ..
+            " / " .. tostring(reason))
     end
 end
 local function onSpawn(_, param)
