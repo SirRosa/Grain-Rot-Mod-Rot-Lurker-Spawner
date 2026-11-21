@@ -1,0 +1,42 @@
+name: Rot Lurker Spawner - test and package
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "ue4ss/**"
+      - "tests/**"
+      - "README.md"
+      - ".github/workflows/ci.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test-package:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Lua 5.4
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y lua5.4
+      - name: Validate syntax
+        run: |
+          luac5.4 -p ue4ss/Mods/GrainRotRotLurkerSpawner/Scripts/main.lua
+          luac5.4 -p tests/test_spawner.lua
+      - name: Run deterministic mock tests
+        run: lua5.4 tests/test_spawner.lua
+      - name: Package installation archive
+        run: |
+          mkdir -p out
+          zip -qr out/GrainRotRotLurkerSpawner-v0.1.0.zip ue4ss/Mods/GrainRotRotLurkerSpawner
+          unzip -t out/GrainRotRotLurkerSpawner-v0.1.0.zip
+      - name: Upload installation archive
+        uses: actions/upload-artifact@v4
+        with:
+          name: GrainRotRotLurkerSpawner-v0.1.0
+          path: out/GrainRotRotLurkerSpawner-v0.1.0.zip
+          if-no-files-found: error
