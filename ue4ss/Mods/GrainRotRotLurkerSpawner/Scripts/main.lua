@@ -1,4 +1,4 @@
--- Grain Rot / Helden 5.7.4 - Rot Lurker Spawner, v0.1.0 (test)
+-- Grain Rot / Helden 5.7.4 - Rot Lurker Spawner, v0.1.1 (test)
 -- Tested against the supplied USMAP/ObjectDump at compile/reflection level only.
 -- Mutates server world on the UE4SS game thread. Never uses os.clock for intervals.
 local CFG = {
@@ -359,4 +359,4 @@ else
     end)
     if not ok then log("FATAL: unable to start game-thread timer: " .. tostring(err)) end
 end
-log("v0.1.0 loaded; 1000ms; host only; exploring only; Rotlurker; maxAlive="..CFG.MaxAlive)
+log("v0.1.1 loaded; 1000ms; host only; exploring only; Rotlurker; maxAlive="..CFG.MaxAlive)
