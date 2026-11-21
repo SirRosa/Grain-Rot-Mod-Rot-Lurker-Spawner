@@ -108,6 +108,12 @@ do
     check(#s.nativeCalls==2, "run end must stop spawning")
 end
 do
+    local s=setup({preset=true})
+    s.tick(4)
+    check(#s.directCalls==4, "loaded Rotlurker class must be used every second")
+    check(#s.nativeCalls==0, "concrete class must be preferred over unverified debug spawning")
+end
+do
     local s=setup({noCheat=true,preset=true})
     s.tick(2)
     check(#s.nativeCalls==0, "no cheat manager, no debug invocation")
