@@ -42,7 +42,7 @@ local function setup(options)
     end
     local pc = obj("HeldenPlayerController host",{
         IsLocalController=function() return true end,
-        CheatManager=options.noCheat and nil or cheat,
+        CheatManager=(not options.noCheat) and cheat or nil,
         EnableCheats=function() end
     })
     local preset = obj("HeldenCharacterPreset ROTLURKER", {
