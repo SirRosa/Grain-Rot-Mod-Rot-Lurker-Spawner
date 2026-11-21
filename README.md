@@ -1,4 +1,4 @@
-# Grain Rot — Rot Lurker Spawner (v0.1.0, test build)
+# Grain Rot — Rot Lurker Spawner (v0.1.1, test build)
 
 UE4SS Lua mod for Grain Rot / `Helden` (Unreal Engine 5.7). **Host-only.**
 
@@ -8,13 +8,13 @@ UE4SS Lua mod for Grain Rot / `Helden` (Unreal Engine 5.7). **Host-only.**
 - Pause automatically in the elevator, outpost, menu, and after the run ends.
 - Spawn on the **authoritative host only**; clients should see native replicated enemies if the engine successfully creates them.
 - No alive-enemy cap by default (`MaxAlive=0`): this intentionally accumulates enemies and may severely affect FPS after a few minutes.
-- Use the game's reflected `HeldenCheatManager:DebugSpawnCharacter(InCharacterName)` when a live host cheat manager exists. Character data name is resolved from `HeldenDataSingleton.CharacterDataTable` where supported, otherwise `Rotlurker`.
-- If no callable cheat manager is found, attempt a world spawn using a **runtime-discovered Rotlurker class** (a matching `HeldenCharacterPreset` or previously alive Rotlurker) at a valid `HeldenDungeonEnemyManager.SpawnLocations` transform. Do not create a generic enemy with a guessed Blueprint path.
+- Prefer spawning a **runtime-discovered Rotlurker class** (from `HeldenCharacterPreset` or existing Rotlurker actor) at a generated `HeldenDungeonEnemyManager.SpawnLocations` transform; then request a default AI controller. Do not spawn an unrelated generic enemy using a guessed Blueprint path.
+- When the exact class is not loaded, request the enemy via the reflected `HeldenCheatManager:DebugSpawnCharacter(InCharacterName)` if a live cheat manager is available. Character data name is resolved from `HeldenDataSingleton.CharacterDataTable` when possible, otherwise it uses `Rotlurker`. **The debug path may be disabled in Shipping builds.**
 
 ## Installation
 
 1. Install a working Grain Rot UE4SS (compatible with `Helden/Binaries/Win64`).
-2. Go to the [CI workflow](../../actions/workflows/ci.yml), open the latest successful run and download its artifact `GrainRotRotLurkerSpawner-v0.1.0`.
+2. Go to the [CI workflow](../../actions/workflows/ci.yml), open the latest successful run and download its artifact `GrainRotRotLurkerSpawner-v0.1.1`.
 3. Extract the artifact ZIP and then the contained installation ZIP into `Grain Rot/Helden/Binaries/Win64/`.
 4. Check `ue4ss/Mods/GrainRotRotLurkerSpawner/Scripts/main.lua` and `ue4ss/Mods/GrainRotRotLurkerSpawner/enabled.txt`.
 5. Install the mod **on the host**. Enter a dungeon; check `UE4SS.log` entries prefixed `[GrainRotRotLurkerSpawner]`.
