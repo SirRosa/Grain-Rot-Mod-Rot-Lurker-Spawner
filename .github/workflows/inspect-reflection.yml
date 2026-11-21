@@ -43,4 +43,16 @@ jobs:
                       print("TRUNCATED AT 230 MATCHES")
                       break
           print("MATCHES",hit)
+          print("=== MORE EXACT SCHEMA ===")
+          for name in ["HeldenEnemyEncounterEntry","HeldenEnemyEncounter","HeldenDataSingleton","HeldenCharacter","HeldenGameMode","HeldenCheatManager","HeldenCharacterPresetContainer","HeldenEnemyEncounterTable","HeldenDungeonLevelData"]:
+              if name in db["structs"]:
+                  print(json.dumps({name:db["structs"][name]},ensure_ascii=False)[:11000])
+          print("=== MORE HELDEN SPAWN FUNCTION NAMES ===")
+          for line in dump.splitlines():
+              if "Function /Script/Helden." in line and any(w in line.lower() for w in ("spawn","enemy","character","cheatmanager")):
+                  print(line[:650])
+          print("=== ROT NAME OR CONTENT ===")
+          for line in dump.splitlines():
+              if "rot" in line.lower() and any(w in line.lower() for w in ("lurker","rotenemy","rotenemy","grainsick")):
+                  print(line[:600])
           PY
