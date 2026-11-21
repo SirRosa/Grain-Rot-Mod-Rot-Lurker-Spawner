@@ -51,6 +51,19 @@ jobs:
           for line in dump.splitlines():
               if "Function /Script/Helden." in line and any(w in line.lower() for w in ("spawn","enemy","character","cheatmanager")):
                   print(line[:650])
+          print("=== CHARACTER DATA SCHEMA ===")
+          for name,body in db["structs"].items():
+              if name in ("HeldenCharacterData","HeldenCharacterSettings","HeldenCharacterPreset","HeldenCharacterAI") or "CharacterData" in name:
+                  print(json.dumps({name:body},ensure_ascii=False)[:8000])
+          print("=== CRITICAL FUNCTION SIGNATURES ===")
+          lines=dump.splitlines()
+          for i,line in enumerate(lines):
+              if any(k in line for k in ("Function /Script/Helden.HeldenCheatManager:DebugSpawnCharacter","Function /Script/Helden.HeldenDataSingleton:GetCharacterDataBP","Function /Script/Helden.HeldenEditorFunctions:GetAllCharacterName","Function /Script/Helden.HeldenCharacter:OnRep_CharacterPreset","Function /Script/Helden.HeldenCharacter:OnRep_AppliedCharacterPreset")):
+                  print("\\n".join(lines[i:i+12]),flush=True)
+          print("=== OTHER CHARACTER DATA FUNCTIONS ===")
+          for line in lines:
+              if "Function /Script/Helden." in line and any(k in line for k in (":ApplyCharacter",":SetCharacterData",":GetCharacterData",":SetCharacterPreset",":ApplyCharacterPreset",":SetupCharacter",":InitializeCharacter")):
+                  print(line[:600])
           print("=== ROT NAME OR CONTENT ===")
           for line in dump.splitlines():
               if "rot" in line.lower() and any(w in line.lower() for w in ("lurker","rotenemy","rotenemy","grainsick")):
